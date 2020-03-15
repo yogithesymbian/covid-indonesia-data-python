@@ -1,6 +1,6 @@
 #Importing packages
 from selenium import webdriver
-import pandas as pd
+# import pandas as pd
 from bs4 import BeautifulSoup as bsoup
 
 driver = webdriver.Chrome('/usr/local/bin/chromedriver')
