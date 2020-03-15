@@ -2,6 +2,7 @@
 from selenium import webdriver
 # import pandas as pd
 from bs4 import BeautifulSoup as bsoup
+import graph as grcov
 
 driver = webdriver.Chrome('/usr/local/bin/chromedriver')
 driver.get("https://coronavirus.thebaselab.com/")
@@ -35,6 +36,13 @@ for post in rows:
             "\n\tMortality Rate : ", arr_rows_data[4],
             "\n\tRecovery Rate  : ", arr_rows_data[5],
         )
+        grcov.graph(
+            arr_rows_data[0],
+            arr_rows_data[1],
+            arr_rows_data[2],
+            arr_rows_data[3]
+            )
+
     # name = post.find('th').get_text()
     # print(name)
 # for post in review:
