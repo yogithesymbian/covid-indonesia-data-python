@@ -6,9 +6,10 @@ covid-indonesia-data-python
 
 LIBRARY REQUIREMENTS:
 
--`pip install selenium`
+- `pip install selenium`
 
-- `pip install BeautifulSoup`
+- `pip install beautifulsoup4`
+
 - driver browser ( chrome, mozila, etc)
 
 ## run code
