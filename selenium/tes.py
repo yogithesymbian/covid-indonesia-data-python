@@ -1,0 +1,5 @@
+print("""
+ak
+asd
+asd
+""")
