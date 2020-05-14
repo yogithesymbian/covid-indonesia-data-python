@@ -3,15 +3,19 @@ from selenium import webdriver
 # import pandas as pd
 from bs4 import BeautifulSoup as bsoup
 import graph as grcov
+import storing as cstore
+from firebase import firebase
+import time
 
 driver = webdriver.Chrome('/usr/local/bin/chromedriver')
 driver.get("https://coronavirus.thebaselab.com/")
 # review = driver.find_elements_by_class_name("text-left")
 bs_obj = bsoup(driver.page_source, 'html.parser')
-rows = bs_obj.find_all('table', class_='table-responsive-sm')[0].find('tbody').find_all('tr')
+rows = bs_obj.find_all('table', class_='table-bordered')[0].find('tbody').find_all('tr')
 
 state_label = 0
 arr_rows_data = []
+arr_rows_data_store = []
 for post in rows:
 
     country = post.find('th').get_text()
@@ -27,29 +31,55 @@ for post in rows:
         )
         for post_td_row in rows_data:
             arr_rows_data.append(post_td_row.text)
+            arr_rows_data_store.append(post_td_row.text)
 
         print(
-            "\n\tInfection      : ", arr_rows_data[0],
-            "\n\tActive Case    : ", arr_rows_data[1],
-            "\n\tDeaths         : ", arr_rows_data[2],
-            "\n\tRecovered      : ", arr_rows_data[3],
-            "\n\tMortality Rate : ", arr_rows_data[4],
-            "\n\tRecovery Rate  : ", arr_rows_data[5],
+            "\n\tCases              : ", arr_rows_data[0],
+            "\n\tDeaths             : ", arr_rows_data[1],
+            "\n\tNew Cases          : ", arr_rows_data[2],
+            "\n\tNew Deaths         : ", arr_rows_data[3],
+            "\n\tActive Cases       : ", arr_rows_data[4],
+            "\n\tRecovered          : ", arr_rows_data[5],
+            "\n\tMortality Rate     : ", arr_rows_data[6],
+            "\n\tRecovery Rate      : ", arr_rows_data[7],
+            "\n\tCases per 1M Pop.  : ", arr_rows_data[8],
         )
+        print(
+            "\n\t========================================",
+            "\n\t (c) 2020 scodeid - Yogi Arif Widodo",
+            "\n\t========================================"
+        )
+        # cstore.store_data(
+        #     arr_rows_data_store[0],
+        #     arr_rows_data_store[1],
+        #     arr_rows_data_store[2],
+        #     arr_rows_data_store[3],
+        #     arr_rows_data_store[4],
+        #     arr_rows_data_store[5]
+        # )
+        time_hhmmss = time.strftime('%H:%M:%S')
+        date_mmddyyyy = time.strftime('%d/%m/%Y')
+
+        data = {
+            'infection': arr_rows_data_store[0],
+            'active_case': arr_rows_data_store[1],
+            'deaths': arr_rows_data_store[2],
+            'recovered': arr_rows_data_store[3],
+            'mortality_rate': arr_rows_data_store[4],
+            'recovery_rate': arr_rows_data_store[5],
+            'date': date_mmddyyyy,
+            'time': time_hhmmss
+
+        }
+        firebase = firebase.FirebaseApplication(yourserver)
+        result = firebase.post('/covid/indonesia', data)
+        print(result)
+
         grcov.graph(
             arr_rows_data[0],
             arr_rows_data[1],
             arr_rows_data[2],
             arr_rows_data[3]
-            )
-
-    # name = post.find('th').get_text()
-    # print(name)
-# for post in review:
-#     if post.text.find("Indonesia") == -1:
-#         continue
-#     else:
-#         print(post.text)
-
+        )
 
 print("debug.point")
