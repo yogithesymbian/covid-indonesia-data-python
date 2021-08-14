@@ -3,11 +3,12 @@ from selenium import webdriver
 # import pandas as pd
 from bs4 import BeautifulSoup as bsoup
 import graph as grcov
-import storing as cstore
+# import storing as cstore
 from firebase import firebase
 import time
 
-driver = webdriver.Chrome('/usr/local/bin/chromedriver')
+# driver = webdriver.Chrome('/usr/local/bin/chromedriver')
+driver = webdriver.Chrome("/opt/homebrew/bin/chromedriver")
 driver.get("https://coronavirus.thebaselab.com/")
 # review = driver.find_elements_by_class_name("text-left")
 bs_obj = bsoup(driver.page_source, 'html.parser')
@@ -43,6 +44,7 @@ for post in rows:
             "\n\tMortality Rate     : ", arr_rows_data[6],
             "\n\tRecovery Rate      : ", arr_rows_data[7],
             "\n\tCases per 1M Pop.  : ", arr_rows_data[8],
+            "\n\tTests per 1M Pop.  : ", arr_rows_data[9],
         )
         print(
             "\n\t========================================",
@@ -61,17 +63,21 @@ for post in rows:
         date_mmddyyyy = time.strftime('%d/%m/%Y')
 
         data = {
-            'infection': arr_rows_data_store[0],
-            'active_case': arr_rows_data_store[1],
-            'deaths': arr_rows_data_store[2],
-            'recovered': arr_rows_data_store[3],
-            'mortality_rate': arr_rows_data_store[4],
-            'recovery_rate': arr_rows_data_store[5],
+            "cases": arr_rows_data_store[0],
+            "deaths": arr_rows_data_store[1],
+            "new_cases": arr_rows_data_store[2],
+            "new_deaths": arr_rows_data_store[3],
+            "active_cases": arr_rows_data_store[4],
+            "recovered": arr_rows_data_store[5],
+            "mortality_rate": arr_rows_data_store[6],
+            "recovery_rate": arr_rows_data_store[7],
+            "cases_per_1_m_pop": arr_rows_data_store[8],
+            "tests_per_1_m_pop": arr_rows_data_store[9],
             'date': date_mmddyyyy,
-            'time': time_hhmmss
+            'time': time_hhmmss,
 
         }
-        firebase = firebase.FirebaseApplication(yourserver)
+        firebase = firebase.FirebaseApplication('yourserver')
         result = firebase.post('/covid/indonesia', data)
         print(result)
 
