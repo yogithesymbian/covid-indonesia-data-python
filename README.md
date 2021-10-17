@@ -1,4 +1,5 @@
 # covid-indonesia-data-python
+[![License](https://poser.pugx.org/laravel/lumen-framework/license.svg)](https://github.com/yogithesymbian)
 
 covid-indonesia-data-python
 ![img](https://media-exp1.licdn.com/dms/image/C5622AQFsRKXXfyNUgw/feedshare-shrink_2048_1536/0/1628982740155?e=1633564800&v=beta&t=wNXuHSQ9EJ6FVh5QJzKNw6f0tnY2ilWnZtB5xLfDxiA)
